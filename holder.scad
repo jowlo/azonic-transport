@@ -32,19 +32,21 @@ module clip(clip_off, clip_thick) {
                     [0,1.5*clip_thick]
                 ]);
               
-                translate([0.8*(clip_off+clip_thick),-1.5*clip_off]){
+                translate([0.75*(clip_off+clip_thick),-3*clip_off]){
                     color("red")
-                    circle(1.5*clip_off, $fn=40);
+                        scale([1,2,1])
+                            circle(1.5*clip_off, $fn=40);
                 }
               
                 translate([clip_off/2,1.5*clip_thick])
-                    circle(r=clip_thick/1.5, $fn=40);
+                    circle(r=clip_off/2, $fn=40);
                     translate([clip_off,0])
                     difference(){
                         translate([clip_thick-clip_thick/1.5,-1])
-                            square(clip_thick/1.5 + 1);
-                        translate([clip_thick-clip_thick/1.5,clip_thick/1.5])
-                            circle(r=clip_thick/1.5, $fn=40);
+                            square(2*clip_thick);
+                        translate([clip_thick-clip_thick/1.5,2*(clip_thick/1.5)])
+                            scale([1,2,1])
+                                circle(r=clip_thick/1.5, $fn=40);
                     }
                 
                 }
@@ -56,11 +58,11 @@ module clips(clip_off,clip_hoff,clip_thick){
      translate([0,0,clip_hoff])
             partial_rotate_extrude(30, inner_d/2 + width, $fn=40)
                 clip(clip_off, clip_thick);
-/*     translate([0,0,-clip_hoff])
+     translate([0,0,-clip_hoff])
             rotate([0,0,180])
                 partial_rotate_extrude(30, inner_d/2 + width, 20, $fn=40)
                     mirror([0,1,0]) clip(clip_off, clip_thick);     
-*/
+
 }    
 
 
@@ -82,9 +84,7 @@ module cylinder(inner_d, width, inset, inset_height, inset_off){
     }
 
             
-clip_off = 4;
-clip_hoff = height/4 ;            
-clip_thick = 3;
+
     
 height = 34;
 width = 3;
@@ -92,8 +92,15 @@ inset = 2;
 inset_height=10;
 inset_off = 1;
 inner_d = 29;
+    
+clip_off = 3;
+clip_thick = 2;
+
+clip_hoff = height/2-2*clip_thick;
+    
     union(){
         clips(clip_off,clip_hoff,clip_thick);
         cylinder(inner_d, width, inset, inset_height, inset_off);
     }
-
+    
+    clip(clip_off,clip_thick);
